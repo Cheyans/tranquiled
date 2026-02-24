@@ -1,15 +1,16 @@
-body {
+html, body {
     margin: 0;
     overflow: hidden;
-    background-color: transparent;
+    background: transparent !important;
+    -webkit-app-region: no-drag;
 }
 
 #led {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background-color: red;
-    border-radius: 50%;
+    border-radius: 0 100% 0 0;
     position: absolute;
-    bottom: 10px;
-    right: 10px; 
+    top: 0;
+    right: 0;
 }

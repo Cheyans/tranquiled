@@ -1,26 +1,38 @@
 const { app, BrowserWindow, globalShortcut, screen } = require('electron');
 
-const useAllDisplays = true; // Set to false to use only the primary display
+const useAllDisplays = false;
 let windows = []; // Array to keep track of all windows
 
 function createWindow(display) {
     const { width, height, x, y } = display.bounds;
 
+    const targetX = x + width - 15;
+    const targetY = y;
+
     let win = new BrowserWindow({
-        width: 100,
-        height: 100,
-        x: x + width - 110,
-        y: y + height - 110,
+        show: false,
+        width: 15,
+        height: 15,
+        x: targetX,
+        y: targetY,
         frame: false,
         transparent: true,
         alwaysOnTop: true,
+        hasShadow: false,
+        enableLargerThanScreen: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
         }
     });
-    windows.push(win); // Add the created window to the array
+    win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    win.setAlwaysOnTop(true, 'screen-saver');
     win.loadFile('index.html');
+    win.webContents.once('did-finish-load', () => {
+        win.setBounds({ x: targetX, y: targetY, width: 15, height: 15 });
+        win.showInactive();
+    });
+    windows.push(win);
 }
 
 app.whenReady().then(() => {
